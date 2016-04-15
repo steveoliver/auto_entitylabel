@@ -69,7 +69,6 @@ class RouteSubscriber extends RouteSubscriberBase {
         ->setOption('parameters', [
           $entity_type_id => ['type' => 'entity:' . $entity_type_id],
         ]);
-
       return $route;
     }
   }

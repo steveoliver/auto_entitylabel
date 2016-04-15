@@ -54,7 +54,6 @@ class AutoEntityLabelConfigTask extends DeriverBase implements ContainerDeriverI
     foreach ($this->derivatives as &$entry) {
       $entry += $base_plugin_definition;
     }
-
     return $this->derivatives;
   }
 }
