@@ -65,6 +65,9 @@ class RouteSubscriber extends RouteSubscriberBase {
           '_controller' => '\Drupal\auto_entitylabel\Controller\AutoEntityLabelController::entityLabelConfiguration',
           '_title' => 'Auto Label',
         ])
+        ->addRequirements([
+          '_permission' => 'administer ' . $entity_type_id . ' labels',
+        ])
         ->setOption('_admin_route', TRUE)
         ->setOption('parameters', [
           $entity_type_id => ['type' => 'entity:' . $entity_type_id],
