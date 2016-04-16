@@ -62,7 +62,7 @@ class RouteSubscriber extends RouteSubscriberBase {
       $route = new Route($route_load);
       $route
         ->addDefaults([
-          '_controller' => '\Drupal\auto_entitylabel\Controller\AutoEntityLabelController::entityLabelConfiguration',
+          '_form' => '\Drupal\auto_entitylabel\Form\AutoEntityLabelForm',
           '_title' => 'Auto Label',
         ])
         ->addRequirements([
