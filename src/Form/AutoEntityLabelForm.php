@@ -150,4 +150,19 @@ class AutoEntityLabelForm extends ConfigFormBase {
 
     return parent::buildForm($form, $form_state);
   }
+
+
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    $key = $this->entity_type_parameter . '_' . $this->entity_type_id;
+    $userInputValues = $form_state->getUserInput();
+    $config = $this->configFactory->getEditable('auto_entitylabel.settings');
+    $config->set('auto_entitylabel_php_' . $key, $userInputValues['auto_entitylabel_php_' . $key]);
+    $config->set('auto_entitylabel_pattern_' . $key, $userInputValues['auto_entitylabel_pattern_' . $key]);
+    $config->set('auto_entitylabel_' . $key, $userInputValues['auto_entitylabel_' . $key]);
+    $config->save();
+    parent::submitForm($form, $form_state);
+  }
 }
