@@ -60,6 +60,7 @@ class AutoEntityLabelForm extends ConfigFormBase {
     $this->entity_type_id = $entity_type->id();
   }
 
+
   /**
    * Gets the configuration names that will be editable.
    *
@@ -101,7 +102,7 @@ class AutoEntityLabelForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $entity_type_parameter = $this->entity_type_parameter;
     $entity_type_id = $this->entity_type_id;
-
+    $entity_type = str_replace('_type', '', $entity_type_parameter);
     $key = $entity_type_parameter . '_' . $entity_type_id;
 
     $config = $this->config('auto_entitylabel.settings');
@@ -134,8 +135,8 @@ class AutoEntityLabelForm extends ConfigFormBase {
     // Display the list of available placeholders if token module is installed.
     if (\Drupal::moduleHandler()->moduleExists('token')) {
       $form['auto_entitylabel']['token_help'] = array(
-        '#theme' => 'token_tree',
-        '#token_types' => array($entity_type_parameter),
+        '#theme' => 'token_tree_link',
+        '#token_types' => array($entity_type),
         '#dialog' => TRUE,
       );
     }
