@@ -106,48 +106,48 @@ class AutoEntityLabelForm extends ConfigFormBase {
     $key = $entity_type_parameter . '_' . $entity_type_id;
 
     $config = $this->config('auto_entitylabel.settings');
-    $form['auto_entitylabel'] = array(
+    $form['auto_entitylabel'] = [
       '#type' => 'fieldset',
-      '#title' => t('Automatic label generation for @type', array('@type' => $entity_type_id)),
+      '#title' => $this->t('Automatic label generation for @type', ['@type' => $entity_type_id]),
       '#weight' => 0,
-    );
+    ];
 
-    $form['auto_entitylabel']['auto_entitylabel_' . $key] = array(
+    $form['auto_entitylabel']['auto_entitylabel_' . $key] = [
       '#type' => 'radios',
       '#default_value' => $config->get('auto_entitylabel_' . $key),
       '#options' => $this->auto_entity_label_manager->auto_entitylabel_options($entity_type_parameter, $entity_type_id),
-    );
+    ];
 
-    $form['auto_entitylabel']['auto_entitylabel_pattern_' . $key] = array(
+    $form['auto_entitylabel']['auto_entitylabel_pattern_' . $key] = [
       '#type' => 'textarea',
-      '#title' => t('Pattern for the title'),
-      '#description' => t('Leave blank for using the per default generated title. Otherwise this string will be used as title. Use the syntax [token] if you want to insert a replacement pattern.'),
+      '#title' => $this->t('Pattern for the title'),
+      '#description' => $this->t('Leave blank for using the per default generated title. Otherwise this string will be used as title. Use the syntax [token] if you want to insert a replacement pattern.'),
       '#default_value' => $config->get('auto_entitylabel_pattern_' . $key, ''),
-    );
+    ];
 
     // Don't allow editing of the pattern if PHP is used, but the users lacks
     // permission for PHP.
     if ($this->config('auto_entitylabel')->get('auto_entitylabel_php_' . $key) && !\Drupal::currentUser()->hasPermission('use PHP for label patterns')) {
       $form['auto_entitylabel']['auto_entitylabel_pattern_' . $key]['#disabled'] = TRUE;
-      $form['auto_entitylabel']['auto_entitylabel_pattern_' . $key]['#description'] = t('You are not allow the configure the pattern for the title, as you lack the %permission permission.', array('%permission' => t('Use PHP for title patterns')));
+      $form['auto_entitylabel']['auto_entitylabel_pattern_' . $key]['#description'] = $this->t('You are not allow the configure the pattern for the title, as you lack the %permission permission.', ['%permission' => $this->t('Use PHP for title patterns')]);
     }
 
     // Display the list of available placeholders if token module is installed.
     if (\Drupal::moduleHandler()->moduleExists('token')) {
-      $form['auto_entitylabel']['token_help'] = array(
+      $form['auto_entitylabel']['token_help'] = [
         '#theme' => 'token_tree_link',
-        '#token_types' => array($entity_type),
+        '#token_types' => [$entity_type],
         '#dialog' => TRUE,
-      );
+      ];
     }
 
-    $form['auto_entitylabel']['auto_entitylabel_php_' . $key] = array(
+    $form['auto_entitylabel']['auto_entitylabel_php_' . $key] = [
       '#access' => \Drupal::currentUser()->hasPermission('use PHP for label patterns'),
       '#type' => 'checkbox',
-      '#title' => t('Evaluate PHP in pattern.'),
-      '#description' => $this->t('Put PHP code above that returns your string, but make sure you surround code in <code>&lt;?php</code> and <code>?&gt;</code>. Note that <code>$entity</code> and <code>$language</code> are available and can be used by your code.'),
+      '#title' => $this->t('Evaluate PHP in pattern.'),
+      '#description' => $this->$this->t('Put PHP code above that returns your string, but make sure you surround code in <code>&lt;?php</code> and <code>?&gt;</code>. Note that <code>$entity</code> and <code>$language</code> are available and can be used by your code.'),
       '#default_value' => $config->get('auto_entitylabel_php_' . $key),
-    );
+    ];
 
     return parent::buildForm($form, $form_state);
   }
