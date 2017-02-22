@@ -42,11 +42,17 @@ class AutoEntityLabelConfigTask extends DeriverBase implements ContainerDeriverI
     $this->derivatives = array();
 
     foreach ($this->entityManager->getDefinitions() as $entity_type_id => $entity_type) {
-
+      // Special handling of Taxonomy. See https://www.drupal.org/node/2822546
+      if ($entity_type_id == "taxonomy_vocabulary") {
+        $base_route = "entity.{$entity_type_id}.overview_form";
+      }
+      else {
+        $base_route = "entity.{$entity_type_id}.edit_form";
+      }
       $this->derivatives["$entity_type_id.auto_label_tab"] = array(
         'route_name' => "entity.{$entity_type_id}.auto_label",
         'title' => 'Auto Label',
-        'base_route' => "entity.{$entity_type_id}.edit_form",
+        'base_route' => $base_route,
         'weight' => 100,
       );
     }
@@ -56,4 +62,5 @@ class AutoEntityLabelConfigTask extends DeriverBase implements ContainerDeriverI
     }
     return $this->derivatives;
   }
+
 }
