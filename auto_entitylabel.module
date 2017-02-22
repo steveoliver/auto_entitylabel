@@ -26,7 +26,7 @@ function auto_entitylabel_form_alter(&$form, \Drupal\Core\Form\FormStateInterfac
   if (isset($form['#entity_builders']) && empty($form['#auto_entitylabel_processed'])) {
     $info = $form_state->getFormObject()->getEntity();
     $type = $info->getEntityType()->id();
-    $bundle = $info->getType();
+    $bundle = $info->bundle();
     // Exit if there is no label field, e.g. users only have a "label callback"
     $key =  'auto_entitylabel' . '_' . $type . '_type_' . $bundle;
     $title_widget = &$form['title']['widget'][0];
