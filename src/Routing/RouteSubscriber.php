@@ -22,7 +22,7 @@ class RouteSubscriber extends RouteSubscriberBase {
   /**
    * The entity type manager
    *
-   * @var \Drupal\Core\Entity\EntityManagerInterface
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
@@ -63,7 +63,7 @@ class RouteSubscriber extends RouteSubscriberBase {
       $route
         ->addDefaults([
           '_form' => '\Drupal\auto_entitylabel\Form\AutoEntityLabelForm',
-          '_title' => 'Auto Label',
+          '_title' => 'Automatic entity label',
         ])
         ->addRequirements([
           '_permission' => 'administer ' . $entity_type_id . ' labels',

@@ -11,3 +11,7 @@ services:
       - { name: route_enhancer }
   auto_entitylabel.manager:
     class: Drupal\auto_entitylabel\AutoEntityLabelManager
+    arguments: ['@entity.manager', '@config.factory', '@entity_type.manager', '@token']
+  auto_entitylabel.entity_decorator:
+    class: Drupal\auto_entitylabel\EntityDecorator
+    arguments: ['@config.factory', '@entity_type.manager', '@token']

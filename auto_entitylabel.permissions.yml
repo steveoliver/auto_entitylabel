@@ -1,2 +1,2 @@
 permission_callbacks:
-  - Drupal\auto_entitylabel\AutoEntityLabelPermisssionController::autoEntityLabelPermissions
+  - Drupal\auto_entitylabel\AutoEntityLabelPermissionController::autoEntityLabelPermissions
