@@ -123,18 +123,18 @@ function auto_entitylabel_validation_constraint_alter(array &$definitions) {
  * Implements hook_entity_operation().
  */
 function auto_entitylabel_entity_operation(EntityInterface $entity) {
-  $operations = array();
+  $operations = [];
   $entity_type = $entity->getEntityType();
   $entity_type_id = $entity_type->id();
   $entity_id = $entity->id();
   if ($entity->hasLinkTemplate('auto-label') &&
     \Drupal::currentUser()->hasPermission('administer ' . $entity_type_id . ' labels')) {
 
-    $operations['auto-label'] = array(
+    $operations['auto-label'] = [
       'title' => t('Manage automatic entity labels'),
       'weight' => 100,
-      'url' => Url::fromRoute("entity.{$entity_type_id}.auto_label", array($entity_type_id => $entity_id)),
-    );
+      'url' => Url::fromRoute("entity.{$entity_type_id}.auto_label", [$entity_type_id => $entity_id]),
+    ];
   }
 
   return $operations;

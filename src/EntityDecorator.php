@@ -15,7 +15,7 @@ class EntityDecorator implements EntityDecoratorInterface {
   /**
    * The content entity that is decorated.
    *
-   * @var ContentEntityInterface
+   * @var \Drupal\Core\Entity\ContentEntityInterface
    */
   protected $entity;
 

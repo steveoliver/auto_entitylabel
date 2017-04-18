@@ -32,7 +32,7 @@ class AutoEntityLabelManager implements AutoEntityLabelManagerInterface {
   /**
    * The content entity.
    *
-   * @var ContentEntityInterface
+   * @var \Drupal\Core\Entity\ContentEntityInterface
    */
   protected $entity;
 
@@ -239,10 +239,10 @@ class AutoEntityLabelManager implements AutoEntityLabelManagerInterface {
     // @codingStandardsIgnoreEnd
     $entity_type = $entity->getEntityType()->id();
     $output = $this->token
-      ->replace($pattern, array($entity_type => $entity), array(
+      ->replace($pattern, [$entity_type => $entity], [
         'sanitize' => FALSE,
         'clear' => TRUE,
-      ));
+      ]);
 
     // Evaluate PHP.
     if ($this->getConfig('php')) {
@@ -281,10 +281,10 @@ class AutoEntityLabelManager implements AutoEntityLabelManagerInterface {
     $content_type = $this->getBundleLabel();
 
     if ($this->entity->id()) {
-      $label = $this->t('@type @id', array(
+      $label = $this->t('@type @id', [
         '@type' => $content_type,
         '@id' => $this->entity->id(),
-      ));
+      ]);
     }
     else {
       $label = $content_type;
@@ -307,9 +307,10 @@ class AutoEntityLabelManager implements AutoEntityLabelManagerInterface {
    * @codingStandardsIgnoreStart
    */
   protected function evalLabel($code, $entity) {
-    // @codingStandardsIgnoreEnd
     ob_start();
+    
     print eval('?>' . $code);
+    // @codingStandardsIgnoreEnd
     $output = ob_get_contents();
     ob_end_clean();
 
@@ -323,19 +324,19 @@ class AutoEntityLabelManager implements AutoEntityLabelManagerInterface {
    */
   public static function auto_entitylabel_options($entity_type, $bundle_name) {
     // @codingStandardsIgnoreEnd
-    $options = array(
+    $options = [
       'auto_entitylabel_disabled' => t('Disabled'),
-    );
+    ];
     if (self::auto_entitylabel_entity_label_visible($entity_type)) {
-      $options += array(
+      $options += [
         'auto_entitylabel_enabled' => t('Automatically generate the label and hide the label field'),
         'auto_entitylabel_optional' => t('Automatically generate the label if the label field is left empty'),
-      );
+      ];
     }
     else {
-      $options += array(
+      $options += [
         'auto_entitylabel_enabled' => t('Automatically generate the label'),
-      );
+      ];
     }
     return $options;
   }
@@ -358,9 +359,9 @@ class AutoEntityLabelManager implements AutoEntityLabelManagerInterface {
    */
   public static function auto_entitylabel_entity_label_visible($entity_type) {
     // @codingStandardsIgnoreEnd
-    $hidden = array(
+    $hidden = [
       'profile2' => TRUE,
-    );
+    ];
 
     return empty($hidden[$entity_type]);
   }
