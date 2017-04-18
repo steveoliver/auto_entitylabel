@@ -20,7 +20,7 @@ use Drupal\Core\Url;
 function auto_entitylabel_entity_type_alter(array &$entity_types) {
   $module_handler = \Drupal::moduleHandler();
   // @var $entity_types \Drupal\Core\Entity\EntityTypeInterface[].
-  foreach ($entity_types as $entity_type_id => $entity_type) {
+  foreach ($entity_types as $entity_type) {
     // Support core entity types only. Contrib and custom entity types should
     // use a hook or service (@todo https://www.drupal.org/node/2829571).
     $core_entity = FALSE;

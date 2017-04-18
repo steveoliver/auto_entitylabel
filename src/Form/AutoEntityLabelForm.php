@@ -133,12 +133,14 @@ class AutoEntityLabelForm extends ConfigFormBase {
 
     // Don't allow editing of the pattern if PHP is used, but the users lacks
     // permission for PHP.
+    // @codingStandardsIgnoreLine
     if ($config->get($key . '_php') && !\Drupal::currentUser()->hasPermission('use PHP for auto entity labels')) {
       $form['auto_entitylabel'][$key . '_pattern']['#disabled'] = TRUE;
       $form['auto_entitylabel'][$key . '_pattern']['#description'] = $this->t('You are not allowed the configure the pattern for the label, because you do not have the %permission permission.', ['%permission' => $this->t('Use PHP for automatic entity label patterns')]);
     }
 
     // Display the list of available placeholders if token module is installed.
+    // @codingStandardsIgnoreLine
     $module_handler = \Drupal::moduleHandler();
     if ($module_handler->moduleExists('token')) {
       $token_info = $module_handler->invoke($this->entity_type_provider, 'token_info');
@@ -151,6 +153,7 @@ class AutoEntityLabelForm extends ConfigFormBase {
     }
 
     $form['auto_entitylabel'][$key . '_php'] = [
+      // @codingStandardsIgnoreLine
       '#access' => \Drupal::currentUser()->hasPermission('use PHP for auto entity labels'),
       '#type' => 'checkbox',
       '#title' => $this->t('Evaluate PHP in pattern.'),
