@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\auto_entitylabel\AutoEntityLabelManagerInterface.
- */
-
 namespace Drupal\auto_entitylabel;
 
 /**
@@ -46,4 +41,5 @@ interface AutoEntityLabelManagerInterface {
    *   Returns true if the label should be automatically generated.
    */
   public function autoLabelNeeded();
+
 }

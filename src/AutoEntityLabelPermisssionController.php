@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\auto_entitylabel\AutoEntityLabelPermisssionController.
- */
-
 namespace Drupal\auto_entitylabel;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
@@ -44,20 +39,21 @@ class AutoEntityLabelPermisssionController implements ContainerInjectionInterfac
   }
 
   /**
-   * Returns an array of auto_entitylabel permissions
+   * Returns an array of auto_entitylabel permissions.
    *
    * @return array
+   *   Return array with permission.
    */
   public function autoEntityLabelPermissions() {
     $permissions = [];
 
     foreach ($this->entityManager->getDefinitions() as $entity_type_id => $entity_type) {
-        // Create a permission for each fieldable entity to manage
-        // the entity labels.
-        $permissions['administer ' . $entity_type_id . ' labels'] = [
-          'title' => $this->t('%entity_label: Administer Entity Labels', ['%entity_label' => $entity_type->getLabel()]),
-          'restrict access' => TRUE,
-        ];
+      // Create a permission for each fieldable entity to manage
+      // the entity labels.
+      $permissions['administer ' . $entity_type_id . ' labels'] = [
+        'title' => $this->t('%entity_label: Administer Entity Labels', ['%entity_label' => $entity_type->getLabel()]),
+        'restrict access' => TRUE,
+      ];
     }
 
     return $permissions;
