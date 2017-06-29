@@ -68,8 +68,9 @@ class AutoEntityLabelForm extends ConfigFormBase {
    *   conjunction with the trait's config() method.
    */
   protected function getEditableConfigNames() {
+    $key = $this->entity_type_parameter . '_' . $this->entity_type_id;
     return [
-      'auto_entitylabel.settings',
+      'auto_entitylabel.entity_type.' . $key,
     ];
   }
 
@@ -99,7 +100,7 @@ class AutoEntityLabelForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $key = $this->entity_type_parameter . '_' . $this->entity_type_id;
-    $config = $this->config('auto_entitylabel.settings');
+    $config = $this->config('auto_entitylabel.entity_type.' . $key);
 
     /*
      * @todo
@@ -112,31 +113,33 @@ class AutoEntityLabelForm extends ConfigFormBase {
       AutoEntityLabelManager::OPTIONAL => $this->t('Automatically generate the label if the label field is left empty'),
     ];
 
+    $form['#tree'] = TRUE;
+
     $form['auto_entitylabel'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Automatic label generation for @type', ['@type' => $this->entity_type_id]),
       '#weight' => 0,
     ];
 
-    $form['auto_entitylabel'][$key . '_status'] = [
+    $form['auto_entitylabel']['status'] = [
       '#type' => 'radios',
-      '#default_value' => $config->get($key . '_status'),
+      '#default_value' => $config->get('status'),
       '#options' => $options,
     ];
 
-    $form['auto_entitylabel'][$key . '_pattern'] = [
+    $form['auto_entitylabel']['pattern'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Pattern for the label'),
       '#description' => $this->t('Leave blank for using the per default generated label. Otherwise this string will be used as label. Use the syntax [token] if you want to insert a replacement pattern.'),
-      '#default_value' => $config->get($key . '_pattern'),
+      '#default_value' => $config->get('pattern'),
     ];
 
     // Don't allow editing of the pattern if PHP is used, but the users lacks
     // permission for PHP.
     // @codingStandardsIgnoreLine
-    if ($config->get($key . '_php') && !\Drupal::currentUser()->hasPermission('use PHP for auto entity labels')) {
-      $form['auto_entitylabel'][$key . '_pattern']['#disabled'] = TRUE;
-      $form['auto_entitylabel'][$key . '_pattern']['#description'] = $this->t('You are not allowed the configure the pattern for the label, because you do not have the %permission permission.', ['%permission' => $this->t('Use PHP for automatic entity label patterns')]);
+    if ($config->get('php') && !\Drupal::currentUser()->hasPermission('use PHP for auto entity labels')) {
+      $form['auto_entitylabel']['pattern']['#disabled'] = TRUE;
+      $form['auto_entitylabel']['pattern']['#description'] = $this->t('You are not allowed the configure the pattern for the label, because you do not have the %permission permission.', ['%permission' => $this->t('Use PHP for automatic entity label patterns')]);
     }
 
     // Display the list of available placeholders if token module is installed.
@@ -152,13 +155,13 @@ class AutoEntityLabelForm extends ConfigFormBase {
       ];
     }
 
-    $form['auto_entitylabel'][$key . '_php'] = [
+    $form['auto_entitylabel']['php'] = [
       // @codingStandardsIgnoreLine
       '#access' => \Drupal::currentUser()->hasPermission('use PHP for auto entity labels'),
       '#type' => 'checkbox',
       '#title' => $this->t('Evaluate PHP in pattern.'),
       '#description' => $this->t('Put PHP code above that returns your string, but make sure you surround code in <code>&lt;?php</code> and <code>?&gt;</code>. Note that <code>$entity</code> and <code>$language</code> are available and can be used by your code.'),
-      '#default_value' => $config->get($key . '_php'),
+      '#default_value' => $config->get('php'),
     ];
 
     return parent::buildForm($form, $form_state);
@@ -168,8 +171,9 @@ class AutoEntityLabelForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $config = $this->configFactory->getEditable('auto_entitylabel.settings');
-    foreach ($form_state->getValues() as $key => $value) {
+    $config_key = $this->entity_type_parameter . '_' . $this->entity_type_id;
+    $config = $this->configFactory->getEditable('auto_entitylabel.entity_type.' . $config_key);
+    foreach ($form_state->getValue('auto_entitylabel') as $key => $value) {
       $config->set($key, $value);
     }
     $config->save();

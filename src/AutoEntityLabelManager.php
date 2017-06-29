@@ -257,18 +257,18 @@ class AutoEntityLabelManager implements AutoEntityLabelManagerInterface {
   /**
    * Returns automatic label configuration of the content entity bundle.
    *
-   * @param string $value
-   *   The configuration value to get.
+   * @param string $key
+   *   The configuration key to get.
    *
    * @return \Drupal\Core\Config\ImmutableConfig
    *   Return the config.
    */
-  protected function getConfig($value) {
+  protected function getConfig($key) {
+    $entity_type = $this->bundle_entity_type . '_' . $this->entity_bundle;
     if (!isset($this->config)) {
-      $this->config = $this->configFactory->get('auto_entitylabel.settings');
+      $this->config = $this->configFactory->get('auto_entitylabel.entity_type.' . $entity_type);
     }
-    $key = $this->bundle_entity_type . '_' . $this->entity_bundle;
-    return $this->config->get($key . '_' . $value);
+    return $this->config->get($key);
   }
 
   /**
