@@ -173,10 +173,12 @@ class AutoEntityLabelForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $config_key = $this->entity_type_parameter . '_' . $this->entity_type_id;
     $config = $this->configFactory->getEditable('auto_entitylabel.entity_type.' . $config_key);
-    foreach ($form_state->getValue('auto_entitylabel') as $key => $value) {
-      $config->set($key, $value);
-    }
-    $config->save();
+    $values = $form_state->getValue('auto_entitylabel');
+    $config
+      ->set('status', (int) $values['status'])
+      ->set('pattern', $values['pattern'])
+      ->set('php', (bool) $values['php'])
+      ->save();
     parent::submitForm($form, $form_state);
   }
 
